@@ -27,15 +27,22 @@ function printHelp () {
   `);
 }
 
-// the parameters of the cli
+function printStatus (patternToWatch, cmd, filePathWatch) {
+  console.log('');
+  console.log('patternToWatch: ', patternToWatch);
+  console.log('cmd: ', cmd);
+  console.log('filePathWatch: ', filePathWatch);
+}
 
-let { version, patternToWatch, cmd, _: filePathWatch } = minimist(argCmd);
+// the parameters of the cli
+let { version, patternToWatch, cmd, _: filePathWatchArray } = minimist(argCmd);
 
 if (version) {
   printVersion();
-} else if (patternToWatch && cmd && filePathWatch.length > 0) {
-  console.log(patternToWatch, cmd, filePathWatch[0]);
-  tailWatch(patternToWatch, cmd, filePathWatch[0]);
+} else if (patternToWatch && cmd && filePathWatchArray.length > 0) {
+  const filePathWatch = filePathWatchArray[0];
+  printStatus(patternToWatch, cmd, filePathWatch);
+  tailWatch(patternToWatch, cmd, filePathWatch);
 } else { // if wrong usage, print the help
   printHelp();
 }
